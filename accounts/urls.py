@@ -8,7 +8,8 @@ urlpatterns = [
     path('account/personel/add/', add_personel_account),
     path('account/personel/<int:profile_id>/update/', update_personel_account),
     path('account/personel/<int:profile_id>/delete/', delete_personel_account),
-    path('account/restaurant/<int:id>/profile/', get_restaurant_with_id_profile),
+    path('account/restaurant/<int:id>/profile/',
+         get_restaurant_with_id_profile),
 
     path('account/restaurant/', get_restaurant_info),
     path('account/restaurant/profile/', get_restaurant_profile),
@@ -21,7 +22,7 @@ urlpatterns = [
 
     path('account/restaurant/<int:profile_id>/reviews/', get_reviews),
 
-    path('account/restaurant/<int:profile_id>/rating/', get_reviews),
+    path('account/restaurant/<int:profile_id>/rating/', get_rating),
 
     path('lists/countries/', get_countries_list),
     path('lists/countries/add/', add_countries),
