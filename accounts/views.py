@@ -345,10 +345,7 @@ def get_reviews(request, profile_id):
 def get_reviews_check(request, profile_id):
     user = request.user
     reviews_list = Reviews.objects.filter(rstr_id=profile_id, reviewed_by=user)
-    if reviews_list.count() > 0:
-        return JsonResponse({"message": True}, safe=False, status=status.HTTP_200_OK)
-    else:
-        return JsonResponse({"message": False}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    return JsonResponse({"message": True}, safe=False, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
