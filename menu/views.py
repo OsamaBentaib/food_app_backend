@@ -17,7 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 @permission_classes([IsAuthenticated])
 def get_menu_list(request, rst_id):
     List = MenuItem.objects.filter(rst_id=rst_id)
-    serializer = MenuItemSerializer(List, many=True)
+    serializer = MenuItemDetailsSerializer(List, many=True)
     if List.count() > 0:
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
     else:
