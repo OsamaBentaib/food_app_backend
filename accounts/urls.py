@@ -22,8 +22,15 @@ urlpatterns = [
 
     path('account/restaurant/<int:profile_id>/reviews/', get_reviews),
     path('account/restaurant/<int:profile_id>/reviews/check/', get_reviews_check),
+    path('account/restaurant/<int:profile_id>/reviews/add/', add_reviews),
+    path('account/restaurant/<int:profile_id>/reviews/update/', update_reviews),
+    path('account/restaurant/<int:profile_id>/reviews/delete/', delete_reviews),
 
     path('account/restaurant/<int:profile_id>/rating/', get_rating),
+    path('account/restaurant/<int:profile_id>/rating/check/', get_rating_check),
+    path('account/restaurant/<int:profile_id>/rating/add/', add_rating),
+    path('account/restaurant/<int:profile_id>/rating/update/', update_rating),
+    path('account/restaurant/<int:profile_id>/rating/delete/', delete_rating),
 
     path('lists/countries/', get_countries_list),
     path('lists/countries/add/', add_countries),

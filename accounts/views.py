@@ -343,9 +343,63 @@ def get_reviews(request, profile_id):
 @csrf_exempt
 @permission_classes([IsAuthenticated])
 def get_reviews_check(request, profile_id):
-    user = request.user
+    user = request.user.id
     reviews_list = Reviews.objects.filter(rstr_id=profile_id, reviewed_by=user)
-    return JsonResponse({"message": True}, safe=False, status=status.HTTP_200_OK)
+    serializer = ReviewsSerializers(reviews_list, many=False)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def add_reviews(request, profile_id):
+    payload = json.loads(request.body)
+    user = request.user
+    try:
+        rst = RestaurantAccount.objects.get(id=profile_id)
+        create = Reviews.objects.create(
+            rstr_id=rst, reviewed_by=user, content=payload['content'], rate=payload['rate'],)
+        serializer = ReviewsSerializers(create)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["PUT"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def update_reviews(request, profile_id):
+    payload = json.loads(request.body)
+    user = request.user.id
+
+    try:
+        review = Reviews.objects.filter(
+            rstr_id=profile_id, reviewed_by=user)
+        review.update(**payload)
+        return JsonResponse({"message": "updated!"}, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["DELETE"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def delete_reviews(request, profile_id):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        review = Reviews.objects.filter(
+            rstr_id=profile_id, reviewed_by=user)
+        review.delete()
+        return JsonResponse({"message": "deleted!"}, safe=False, status=status.HTTP_204_NO_CONTENT)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["GET"])
@@ -355,6 +409,69 @@ def get_rating(request, profile_id):
     rating_list = Rating.objects.filter(rating=profile_id)
     serializer = RatingSerializers(rating_list, many=True)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_rating_check(request, profile_id):
+    user = request.user.id
+    rating = Rating.objects.get(
+        rating=profile_id, rated_by=user)
+    serializer = RatingSerializers(rating)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def add_rating(request, profile_id):
+    payload = json.loads(request.body)
+    user = request.user
+    try:
+        rst = RestaurantAccount.objects.get(id=profile_id)
+        create = Rating.objects.create(
+            rating=rst, rated_by=user, rate=payload['rate'], delivery_rate=payload['delivery_rate'], takeaway_rate=payload['takeaway_rate'], dinin_rate=payload['dinin_rate'],)
+        serializer = RatingSerializers(create)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["PUT"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def update_rating(request, profile_id):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rating = Rating.objects.filter(
+            rating=profile_id, rated_by=user)
+        rating.update(**payload)
+        return JsonResponse({"message": "updated!"}, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["DELETE"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def delete_rating(request, profile_id):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rating = Rating.objects.filter(
+            rating=profile_id, rated_by=user)
+        rating.delete()
+        return JsonResponse({"message": "deleted!"}, safe=False, status=status.HTTP_204_NO_CONTENT)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["GET"])

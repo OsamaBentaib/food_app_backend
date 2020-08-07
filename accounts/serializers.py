@@ -82,3 +82,10 @@ class RatingSerializers(serializers.ModelSerializer):
         model = Rating
         fields = ('id', 'rated_by', 'rating', 'rate',
                   'delivery_rate', 'takeaway_rate', 'dinin_rate', 'created_at', 'updated_at')
+
+
+class RatingSingleSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ('id', 'rate',
+                  'delivery_rate', 'takeaway_rate', 'dinin_rate')
