@@ -21,6 +21,7 @@ urlpatterns = [
     path('account/restaurant/serviceoffer/update/', update_service_offer),
 
     path('account/restaurant/<int:profile_id>/reviews/', get_reviews),
+    path('account/restaurant/<int:profile_id>/reviews/check/', get_reviews_check),
 
     path('account/restaurant/<int:profile_id>/rating/', get_rating),
 
