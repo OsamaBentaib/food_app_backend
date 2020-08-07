@@ -11,4 +11,4 @@ admin.site.register(Countries)
 admin.site.register(Verifications)
 admin.site.register(TokenType)
 admin.site.register(Rating)
-
+admin.site.register(Reviews)
