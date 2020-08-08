@@ -91,3 +91,58 @@ def delete_menu_item(request, item_id, profile_id):
         return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
     except Exception:
         return JsonResponse({'error': 'Something went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def add_menu_item_intG(request, item):
+    payload = json.loads(request.body)
+    user = request.user
+    try:
+        item = MenuItem.objects.get(id=item)
+        create = Ingredients.objects.create(
+            Item=item,
+            title=payload['title'],
+            poster="",
+        )
+        serializer = IngredientsSerializer(create)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["PUT"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def update_menu_item_intG(request, item, intg):
+    user = request.user.id
+    payload = json.loads(request.body)
+    try:
+        intGup = Ingredients.objects.filter(id=intg, Item=item)
+        # returns 1 or 0
+        intGup.update(**payload)
+        book = Ingredients.objects.get(id=intg, Item=item)
+        serializer = IngredientsSerializer(book)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["DELETE"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def delete_menu_item_intG(request, intg, item):
+    user = request.user.id
+    try:
+        items = Ingredients.objects.filter(Item=item, id=intg)
+        items.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -11,6 +11,12 @@ urlpatterns = [
     path('items/restaurant/list/add/', add_menu_item),
     path('items/restaurant/list/<int:item_id>/update/', update_menu_item),
     path('items/restaurant/list/<int:item_id>/delete/', delete_menu_item),
+
+    path('items/restaurant/list/<int:item>/intg/add/', add_menu_item_intG),
+    path('items/restaurant/list/<int:item>/intg/<int:intg>/update/',
+         update_menu_item_intG),
+    path('items/restaurant/list/<int:item>/intg/<int:intg>/delete/',
+         delete_menu_item_intG),
     # path('addbook', add_book),
     # path('updatebook/<int:book_id>', update_book),
     # path('deletebook/<int:book_id>', delete_book)
