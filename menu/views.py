@@ -43,13 +43,13 @@ def add_menu_item(request):
         author = RestaurantAccount.objects.get(added_by=user)
         item = MenuItem.objects.create(
             added_by=user,
-            author=author,
+            rst_id=author,
             title=payload["title"],
             description=payload["description"],
             price=payload["price"],
             dprice=payload["dprice"],
             categories=payload["categories"],
-            poster=""
+            poster="",
         )
         serializer = MenuItemSerializer(item)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
