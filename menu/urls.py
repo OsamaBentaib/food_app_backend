@@ -13,6 +13,7 @@ urlpatterns = [
     path('items/restaurant/list/<int:item_id>/delete/', delete_menu_item),
 
     path('items/restaurant/list/<int:item>/intg/add/', add_menu_item_intG),
+    path('items/restaurant/list/<int:item>/intg/', get_menu_item_inGt),
     path('items/restaurant/list/<int:item>/intg/<int:intg>/update/',
          update_menu_item_intG),
     path('items/restaurant/list/<int:item>/intg/<int:intg>/delete/',

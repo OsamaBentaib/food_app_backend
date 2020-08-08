@@ -93,6 +93,14 @@ def delete_menu_item(request, item_id, profile_id):
         return JsonResponse({'error': 'Something went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_menu_item_inGt(request, item):
+    List = Ingredients.objects.filter(Item=item)
+    serializer = IngredientsSerializer(List, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
 @api_view(["POST"])
 @csrf_exempt
 @permission_classes([IsAuthenticated])
