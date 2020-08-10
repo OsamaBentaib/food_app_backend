@@ -23,7 +23,7 @@ from .serializers import *
 @permission_classes([IsAuthenticated])
 def get_personel_info(request):
     user = request.user.id
-    Person = PersonelAccount.objects.filter(added_by=user)
+    Person = PersonelAccount.objects.get(added_by=user)
     serializer = PersonelAccountSerializer(Person)
     if Person.count() > 0:
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
