@@ -79,13 +79,13 @@ class RestaurantAccountAddSerializer(serializers.ModelSerializer):
 
 
 class PersonelAccountSerializer(serializers.ModelSerializer):
-    location = PersonLocationSerializers(
-        many=False, source="Locations_restaurants")
+    # location = PersonLocationSerializers(
+    #     many=False, source="Locations_restaurants")
 
     class Meta:
         model = PersonelAccount
         fields = ('id', 'added_by', 'name', 'address', 'location',
-                  'city', 'phone', 'created_at', 'updated_at')
+                  'city', 'phone', 'country', 'created_at', 'updated_at')
 
 
 class ReviewsSerializers(serializers.ModelSerializer):

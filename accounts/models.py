@@ -20,17 +20,21 @@ class Cities(models.Model):
 
     def __str__(self):
         return self.name
+
+
 class PersonLocations(models.Model):
     added_by = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     long = models.DecimalField(max_digits=9, decimal_places=6)
-    lat  = models.DecimalField(max_digits=9, decimal_places=6)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
+
 
 class RestaurantLocations(models.Model):
     added_by = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     long = models.DecimalField(max_digits=9, decimal_places=6)
-    lat  = models.DecimalField(max_digits=9, decimal_places=6)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
+
 
 class PersonelAccount(models.Model):
     added_by = models.OneToOneField(
@@ -65,6 +69,7 @@ class CategoriesChoices(models.Model):
 
     def __str__(self):
         return self.categorie
+
 
 class RestaurantAccount(models.Model):
     added_by = models.OneToOneField(
