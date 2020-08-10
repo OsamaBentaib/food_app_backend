@@ -481,3 +481,18 @@ def get_services(request):
     List = ServicesChoices.objects.filter()
     serializer = ServicesSerializers(List, many=True)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+
+
+# Restaurant Queries For Person
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_popular_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(city=city)
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+

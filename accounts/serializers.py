@@ -56,7 +56,22 @@ class RestaurantAccountSerializer(serializers.ModelSerializer):
                   'bio', 'website', 'avatar', 'phone', 'serviceOffer', 'isVirefied',  'created_at', 'updated_at')
 
 
+class PersonLocationSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = PersonLocations
+        fields = ('id', 'added_by', 'long', 'lat')
+
+
+class RestaurantLocationSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = RestaurantLocations
+        fields = ('id', 'added_by', 'long', 'lat')
+
+
 class RestaurantAccountAddSerializer(serializers.ModelSerializer):
+    location = RestaurantLocationSerializers(
+        many=False, source="Locations_person")
+
     class Meta:
         model = RestaurantAccount
         fields = ('id', 'added_by', 'name', 'address', 'location', 'city', 'country',
@@ -64,6 +79,9 @@ class RestaurantAccountAddSerializer(serializers.ModelSerializer):
 
 
 class PersonelAccountSerializer(serializers.ModelSerializer):
+    location = PersonLocationSerializers(
+        many=False, source="Locations_restaurants")
+
     class Meta:
         model = PersonelAccount
         fields = ('id', 'added_by', 'name', 'address', 'location',

@@ -41,7 +41,7 @@ class RestaurantNameSerializer(serializers.ModelSerializer):
 class PersonNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = PersonelAccount
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'phone')
 
 
 class OrdersSerializers(serializers.ModelSerializer):

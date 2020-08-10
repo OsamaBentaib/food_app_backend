@@ -10,7 +10,6 @@ urlpatterns = [
     path('account/personel/<int:profile_id>/delete/', delete_personel_account),
     path('account/restaurant/<int:id>/profile/',
          get_restaurant_with_id_profile),
-
     path('account/restaurant/', get_restaurant_info),
     path('account/restaurant/profile/', get_restaurant_profile),
     path('account/restaurant/add/', add_restaurant_account),
@@ -37,6 +36,14 @@ urlpatterns = [
     path('lists/cities/', get_cities_list),
     path('lists/cities/add/', add_cities),
     path('lists/services/', get_services),
+    
+
+
+    # Filters by Lists
+    path('fliters/list/c/<str:city>/', get_popular_list)
+
+
+
 
     #   path('addbook', add_book),
     #   path('updatebook/', update_book),

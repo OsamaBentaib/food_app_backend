@@ -20,14 +20,25 @@ class Cities(models.Model):
 
     def __str__(self):
         return self.name
+class PersonLocations(models.Model):
+    added_by = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    long = models.DecimalField(max_digits=9, decimal_places=6)
+    lat  = models.DecimalField(max_digits=9, decimal_places=6)
 
+class RestaurantLocations(models.Model):
+    added_by = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    long = models.DecimalField(max_digits=9, decimal_places=6)
+    lat  = models.DecimalField(max_digits=9, decimal_places=6)
 
 class PersonelAccount(models.Model):
     added_by = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     address = models.TextField()
-    location = models.CharField(max_length=200)
+    location = models.ForeignKey(
+        PersonLocations, on_delete=models.SET_NULL, null=True, related_name='Locations_person')
     city = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
     phone = models.CharField(max_length=200)
@@ -55,13 +66,13 @@ class CategoriesChoices(models.Model):
     def __str__(self):
         return self.categorie
 
-
 class RestaurantAccount(models.Model):
     added_by = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name = models.CharField(max_length=200,)
     address = models.CharField(max_length=400)
-    location = models.CharField(max_length=200,)
+    location = models.ForeignKey(
+        RestaurantLocations, on_delete=models.SET_NULL, null=True, related_name='Locations_restaurants')
     phone = models.CharField(max_length=200,)
     city = models.CharField(max_length=200,)
     country = models.CharField(max_length=200,)
