@@ -25,10 +25,7 @@ def get_personel_info(request):
     user = request.user.id
     Person = PersonelAccount.objects.get(added_by=user)
     serializer = PersonelAccountSerializer(Person, many=False)
-    if Person.count() > 0:
-        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
-    else:
-        return JsonResponse({'error': "ObjectDoesNotExist"}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
@@ -483,8 +480,6 @@ def get_services(request):
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
-
-
 # Restaurant Queries For Person
 
 @api_view(["GET"])
@@ -495,4 +490,3 @@ def get_popular_list(request, city):
     Restaurant = RestaurantAccount.objects.filter(city=city)
     serializer = RestaurantAccountSerializer(Restaurant, many=True)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
-
