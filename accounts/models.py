@@ -117,7 +117,7 @@ class TokenType(models.Model):
 
 
 class Rating(models.Model):
-    rated_by = models.OneToOneField(
+    rated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     rating = models.ForeignKey(
         RestaurantAccount, on_delete=models.SET_NULL, null=True)
@@ -130,7 +130,7 @@ class Rating(models.Model):
 
 
 class Reviews(models.Model):
-    reviewed_by = models.OneToOneField(
+    reviewed_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     rstr_id = models.ForeignKey(
         RestaurantAccount, on_delete=models.SET_NULL, null=True)
