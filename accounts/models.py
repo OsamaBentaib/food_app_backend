@@ -84,6 +84,7 @@ class RestaurantAccount(models.Model):
     avatar = models.ImageField(
         upload_to='Profile', max_length=90000, blank=False, null=False)
     isVirefied = models.BooleanField(default=False)
+    status = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

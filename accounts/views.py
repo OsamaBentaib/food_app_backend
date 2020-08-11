@@ -411,10 +411,13 @@ def get_rating(request, profile_id):
 @permission_classes([IsAuthenticated])
 def get_rating_check(request, profile_id):
     user = request.user.id
-    rating = Rating.objects.get(
-        rating=profile_id, rated_by=user)
-    serializer = RatingSerializers(rating)
-    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    try:
+        rating = Rating.objects.get(
+            rating=profile_id, rated_by=user)
+        serializer = RatingSerializers(rating, many=False)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(["POST"])
