@@ -22,20 +22,6 @@ class Cities(models.Model):
         return self.name
 
 
-class PersonLocations(models.Model):
-    added_by = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    long = models.DecimalField(max_digits=9, decimal_places=6)
-    lat = models.DecimalField(max_digits=9, decimal_places=6)
-
-
-class RestaurantLocations(models.Model):
-    added_by = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    long = models.DecimalField(max_digits=9, decimal_places=6)
-    lat = models.DecimalField(max_digits=9, decimal_places=6)
-
-
 class PersonelAccount(models.Model):
     added_by = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -90,6 +76,20 @@ class RestaurantAccount(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class PersonLocations(models.Model):
+    added_by = models.OneToOneField(
+        PersonelAccount, on_delete=models.SET_NULL, null=True, related_name='Person_location')
+    long = models.DecimalField(max_digits=9, decimal_places=6)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
+
+
+class RestaurantLocations(models.Model):
+    added_by = models.OneToOneField(
+        RestaurantAccount, on_delete=models.SET_NULL, null=True, related_name='Restaurant_location',)
+    long = models.DecimalField(max_digits=9, decimal_places=6)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
 
 
 class ServiceOffer(models.Model):

@@ -10,6 +10,9 @@ urlpatterns = [
     path('account/personel/<int:profile_id>/delete/', delete_personel_account),
     path('account/restaurant/<int:id>/profile/',
          get_restaurant_with_id_profile),
+    path('account/person/location/add/', add_Location_person),
+    path('account/person/location/update/', update_location_person),
+
     path('account/restaurant/', get_restaurant_info),
     path('account/restaurant/profile/', get_restaurant_profile),
     path('account/restaurant/add/', add_restaurant_account),
@@ -18,6 +21,8 @@ urlpatterns = [
     path('account/restaurant/<int:profile_id>/serviceoffer/', get_service_offer),
     path('account/restaurant/serviceoffer/add/', add_service_offer),
     path('account/restaurant/serviceoffer/update/', update_service_offer),
+    path('account/restaurant/location/add/', add_Location),
+    path('account/restaurant/location/update/', update_location),
 
     path('account/restaurant/<int:profile_id>/reviews/', get_reviews),
     path('account/restaurant/<int:profile_id>/reviews/check/', get_reviews_check),
@@ -36,7 +41,7 @@ urlpatterns = [
     path('lists/cities/', get_cities_list),
     path('lists/cities/add/', add_cities),
     path('lists/services/', get_services),
-    
+
 
 
     # Filters by Lists

@@ -46,25 +46,27 @@ class VerificationSerializer(serializers.ModelSerializer):
         fields = ("id", "rst_id", "isVirefied")
 
 
+class RestaurantLocationSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = RestaurantLocations
+        fields = ('id', 'added_by', 'long', 'lat')
+
+
 class RestaurantAccountSerializer(serializers.ModelSerializer):
     serviceOffer = ServiceOfferAddSerializer(
         many=False, source='serviceOfferType')
+    location = RestaurantLocationSerializers(
+        many=False, source="Restaurant_location")
 
     class Meta:
         model = RestaurantAccount
         fields = ('id', 'added_by', 'name', 'address', 'city', 'Service', 'Categorie',
-                  'bio', 'website', 'avatar', 'phone', 'serviceOffer', 'isVirefied', 'status',  'created_at', 'updated_at')
+                  'bio', 'website', 'avatar', 'phone', 'serviceOffer', 'isVirefied', 'status', 'location', 'created_at', 'updated_at')
 
 
 class PersonLocationSerializers(serializers.ModelSerializer):
     class Meta:
         model = PersonLocations
-        fields = ('id', 'added_by', 'long', 'lat')
-
-
-class RestaurantLocationSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = RestaurantLocations
         fields = ('id', 'added_by', 'long', 'lat')
 
 

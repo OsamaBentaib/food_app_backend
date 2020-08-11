@@ -339,9 +339,15 @@ def get_reviews(request, profile_id):
 @permission_classes([IsAuthenticated])
 def get_reviews_check(request, profile_id):
     user = request.user.id
-    reviews_list = Reviews.objects.filter(rstr_id=profile_id, reviewed_by=user)
-    serializer = ReviewsSerializers(reviews_list, many=False)
-    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    try:
+        reviews_list = Reviews.objects.filter(
+            rstr_id=profile_id, reviewed_by=user)
+        serializer = ReviewsSerializers(reviews_list, many=False)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["POST"])
@@ -479,6 +485,78 @@ def get_services(request):
     List = ServicesChoices.objects.filter()
     serializer = ServicesSerializers(List, many=True)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["POST"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def add_Location(request):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rst = RestaurantAccount.objects.get(added_by=user)
+        create = RestaurantLocations.objects.create(
+            added_by=rst, long=payload['long'], lat=payload['lat'],)
+        serializer = RestaurantLocationSerializers(create)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["PUT"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def update_location(request):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rst = RestaurantAccount.objects.get(added_by=user)
+        location = RestaurantLocations.objects.filter(
+            added_by=rst)
+        location.update(**payload)
+        return JsonResponse({"message": "updated!"}, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def add_Location_person(request):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rst = PersonelAccount.objects.get(added_by=user)
+        create = PersonLocations.objects.create(
+            added_by=rst, long=payload['long'], lat=payload['lat'],)
+        serializer = PersonLocationSerializers(create)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["PUT"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def update_location_person(request):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rst = PersonelAccount.objects.get(added_by=user)
+        location = PersonLocations.objects.filter(
+            added_by=rst)
+        location.update(**payload)
+        return JsonResponse({"message": "updated!"}, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # Restaurant Queries For Person
