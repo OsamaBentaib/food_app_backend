@@ -7,6 +7,7 @@ urlpatterns = [
     # url(r'^api/tutorials/(?P<pk>[0-9]+)$', tutorial_detail),
     # url(r'^api/tutorials/published$', tutorial_list_published),
     path('items/restaurant/<int:rst_id>/lists/', get_menu_list),
+    path('items/restaurant/lists/', get_menu_list_by_request),
     path('items/restaurant/list/<int:item_id>/details/', get_menu_item_details),
     path('items/restaurant/list/add/', add_menu_item),
     path('items/restaurant/list/<int:item_id>/update/', update_menu_item),

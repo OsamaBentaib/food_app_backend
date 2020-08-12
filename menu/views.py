@@ -23,6 +23,19 @@ def get_menu_list(request, rst_id):
     else:
         return JsonResponse({"error": "Not Found"}, safe=False, status=status.HTTP_404_NOT_FOUND)
 
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_menu_list_by_request(request):
+    user=request.user.id
+    rst = RestaurantAccount.objects.get(added_by=user)
+    List = MenuItem.objects.filter(rst_id=rst)
+    serializer = MenuItemDetailsSerializer(List, many=True)
+    if List.count() > 0:
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"error": "Not Found"}, safe=False, status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(["GET"])
 @csrf_exempt
