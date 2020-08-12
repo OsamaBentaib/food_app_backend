@@ -18,23 +18,18 @@ from django.core.exceptions import ObjectDoesNotExist
 def get_menu_list(request, rst_id):
     List = MenuItem.objects.filter(rst_id=rst_id)
     serializer = MenuItemDetailsSerializer(List, many=True)
-    if List.count() > 0:
-        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
-    else:
-        return JsonResponse({"error": "Not Found"}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
 
 @api_view(["GET"])
 @csrf_exempt
 @permission_classes([IsAuthenticated])
 def get_menu_list_by_request(request):
-    user=request.user.id
+    user = request.user.id
     rst = RestaurantAccount.objects.get(added_by=user)
     List = MenuItem.objects.filter(rst_id=rst)
     serializer = MenuItemDetailsSerializer(List, many=True)
-    if List.count() > 0:
-        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
-    else:
-        return JsonResponse({"error": "Not Found"}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
@@ -113,6 +108,7 @@ def get_menu_item_inGt(request, item):
     List = Ingredients.objects.filter(Item=item)
     serializer = IngredientsSerializer(List, many=True)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
 
 @api_view(["POST"])
 @csrf_exempt
