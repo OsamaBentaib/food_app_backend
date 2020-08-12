@@ -22,6 +22,7 @@ class Cities(models.Model):
         return self.name
 
 
+
 class PersonelAccount(models.Model):
     added_by = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -29,7 +30,6 @@ class PersonelAccount(models.Model):
     address = models.TextField()
     city = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
-    phone = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -84,6 +84,12 @@ class PersonLocations(models.Model):
     long = models.DecimalField(max_digits=9, decimal_places=6)
     lat = models.DecimalField(max_digits=9, decimal_places=6)
 
+class PersonPhone(models.Model):
+    added_by = models.OneToOneField(
+        PersonelAccount, on_delete=models.SET_NULL, null=True, related_name='Person_phone')
+    phone = models.CharField(max_length=200)
+    isActivate = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class RestaurantLocations(models.Model):
     added_by = models.OneToOneField(

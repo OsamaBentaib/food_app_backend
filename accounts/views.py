@@ -16,6 +16,20 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 from .serializers import *
 
+from sendsms import api
+
+
+@api_view(["POST"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def send_SMS_(request):
+    payload = json.loads(request.body)
+    fr = payload["from"]
+    to = payload["to"]
+    body = "Test SMS Message !"
+    api.send_sms(body=body, from_phone=fr, to=[to])
+    return JsonResponse({"message": "Sended!"}, safe=False, status=status.HTTP_200_OK)
+
 
 # Get Personel Info
 @api_view(["GET"])
@@ -50,6 +64,7 @@ def add_token_type(request):
     )
     serializer = TokenTypeSerializer(create)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
+
 
 # POST Personel Info
 
@@ -552,6 +567,42 @@ def update_location_person(request):
         location = PersonLocations.objects.filter(
             added_by=rst)
         location.update(**payload)
+        return JsonResponse({"message": "updated!"}, safe=False, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["POST"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def add_personel_account_phone(request):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rst = PersonelAccount.objects.get(added_by=user)
+        create = PersonPhone.objects.create(
+            added_by=rst, phone=payload['phone'])
+        serializer = PersonPhoneSerializers(create)
+        return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
+    except ObjectDoesNotExist as e:
+        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    except Exception:
+        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(["PUT"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def update_personel_account_phone(request):
+    payload = json.loads(request.body)
+    user = request.user.id
+    try:
+        rst = PersonelAccount.objects.get(added_by=user)
+        phone = PersonPhone.objects.filter(
+            added_by=rst)
+        phone.update(**payload)
         return JsonResponse({"message": "updated!"}, safe=False, status=status.HTTP_200_OK)
     except ObjectDoesNotExist as e:
         return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)

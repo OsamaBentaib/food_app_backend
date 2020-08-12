@@ -64,12 +64,6 @@ class RestaurantAccountSerializer(serializers.ModelSerializer):
                   'bio', 'website', 'avatar', 'phone', 'serviceOffer', 'isVirefied', 'status', 'location', 'created_at', 'updated_at')
 
 
-class PersonLocationSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = PersonLocations
-        fields = ('id', 'added_by', 'long', 'lat')
-
-
 class RestaurantAccountAddSerializer(serializers.ModelSerializer):
     location = RestaurantLocationSerializers(
         many=False, source="Locations_person")
@@ -80,14 +74,27 @@ class RestaurantAccountAddSerializer(serializers.ModelSerializer):
                   'Service', 'Categorie', 'bio', 'website', 'avatar', 'phone', 'status')
 
 
+class PersonLocationSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = PersonLocations
+        fields = ('id', 'added_by', 'long', 'lat')
+
+
+class PersonPhoneSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = PersonPhone
+        fields = ('id', 'added_by', 'phone', 'isActivate')
+
+
 class PersonelAccountSerializer(serializers.ModelSerializer):
-    # location = PersonLocationSerializers(
-    #     many=False, source="Locations_restaurants")
+    location = PersonLocationSerializers(
+        many=False, source="Person_location")
+    phone = PersonPhoneSerializers(many=False, source="Person_phone")
 
     class Meta:
         model = PersonelAccount
         fields = ('id', 'added_by', 'name', 'address',
-                  'city', 'phone', 'country', 'created_at', 'updated_at')
+                  'city', 'country', 'location', 'phone', 'created_at', 'updated_at')
 
 
 class ReviewsSerializers(serializers.ModelSerializer):

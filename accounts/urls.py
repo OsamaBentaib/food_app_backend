@@ -2,6 +2,9 @@ from django.urls import include, path
 from .views import *
 
 urlpatterns = [
+    path('send/sms/', send_SMS_),
+    path('account/personel/phone/add/', add_personel_account_phone),
+    path('account/personel/phone/update/', update_personel_account_phone),
     path('token/', get_token_type),
     path('token/add/', add_token_type),
     path('account/personel/', get_personel_info),
