@@ -162,7 +162,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-SENDSMS_BACKEND = 'sendsms.backends.console.SmsBackend'
 # Phone Verification
 
 

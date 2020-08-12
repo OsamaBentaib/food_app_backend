@@ -16,19 +16,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 from .serializers import *
 
-from sendsms import api
-
-
-@api_view(["POST"])
-@csrf_exempt
-@permission_classes([IsAuthenticated])
-def send_SMS_(request):
-    payload = json.loads(request.body)
-    fr = payload["from"]
-    to = payload["to"]
-    body = "Test SMS Message !"
-    api.send_sms(body=body, from_phone=fr, to=[to])
-    return JsonResponse({"message": "Sended!"}, safe=False, status=status.HTTP_200_OK)
 
 
 # Get Personel Info
@@ -82,7 +69,6 @@ def add_personel_account(request):
             address=payload["address"],
             city=payload["city"],
             country=payload["country"],
-            phone=payload["phone"],
         )
         serializer = PersonelAccountSerializer(create)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
