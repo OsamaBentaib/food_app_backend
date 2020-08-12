@@ -49,9 +49,7 @@ class IngredientsSerializer(serializers.ModelSerializer):
 
 
 class MenuItemDetailsSerializer(serializers.ModelSerializer):
-    Ingredients = IngredientsSerializer(source='makers', many=True)
     rst_id = RestaurantAccountSerializer(many=False)
-
     class Meta:
         model = MenuItem
         fields = ('id',
@@ -62,6 +60,5 @@ class MenuItemDetailsSerializer(serializers.ModelSerializer):
                   'dprice',
                   'poster',
                   'created_at',
-                  'Ingredients'
                   )
         depth = 1

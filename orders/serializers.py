@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import *
 from menu.models import MenuItem
 from accounts.models import RestaurantAccount, PersonelAccount
+from accounts.serializers import PersonelAccountSerializer
 
 
 class OrdersNewSerializers(serializers.ModelSerializer):
@@ -38,17 +39,11 @@ class RestaurantNameSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class PersonNameSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PersonelAccount
-        fields = ('id', 'name', 'phone')
-
-
 class OrdersSerializers(serializers.ModelSerializer):
     items = OrderItemsNewSerializers(
         many=True, source='Order_item_lists')
     ordered_from = RestaurantNameSerializer(many=False)
-    ordered_by_name = PersonNameSerializer(many=False)
+    ordered_by_name = PersonelAccountSerializer(many=False)
 
     class Meta:
         model = Orders
