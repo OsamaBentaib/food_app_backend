@@ -2,7 +2,7 @@ from django.urls import include, path
 from .views import *
 
 urlpatterns = [
-    path('account/personel/phone/add/', add_personel_account_phone),
+    path('account/personel/phone/add/code/<int:code>/', add_personel_account_phone),
     path('account/personel/phone/update/', update_personel_account_phone),
     path('token/', get_token_type),
     path('token/add/', add_token_type),
@@ -47,7 +47,15 @@ urlpatterns = [
 
 
     # Filters by Lists
-    path('fliters/list/c/<str:city>/', get_popular_list)
+    path('fliters/list/c/<str:city>/', get_popular_list),
+    path('fliters/list/takeaway/c/<str:city>/', get_takeaway_list),
+    path('fliters/list/verified/c/<str:city>/', get_Verified_list),
+    path('fliters/list/dinin/c/<str:city>/', get_dinIn_list),
+    path('fliters/list/delivery/c/<str:city>/', get_delivery_list),
+    path('fliters/list/open/c/<str:city>/', get_open_list),
+    path('fliters/list/score/c/<str:city>/', get_score_list),
+    path('fliters/list/promo/c/<str:city>/', get_promo_list),
+
 
 
 

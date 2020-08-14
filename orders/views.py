@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import F
 
 from .serializers import *
 from rest_framework import status
@@ -153,6 +154,8 @@ def update_order_by_restaurant(request, person, order):
         __order.update(
             order_status=payload['order_status'],
         )
+        RestaurantAccount.objects.filter(
+            id=author).update(score=F('score') + 1)
 
     return JsonResponse({"updated": True}, safe=False, status=status.HTTP_201_CREATED)
     # try:

@@ -8,6 +8,7 @@ from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework import viewsets
+from django.db.models import F
 
 import json
 from django.core.exceptions import ObjectDoesNotExist
@@ -15,7 +16,6 @@ from django.core.exceptions import ObjectDoesNotExist
 # Models And Serializers
 from .models import *
 from .serializers import *
-
 
 
 # Get Personel Info
@@ -70,7 +70,7 @@ def add_personel_account(request):
             city=payload["city"],
             country=payload["country"],
         )
-        serializer = PersonelAccountSerializer(create)
+        serializer = PersonelAccountAddSerializer(create)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_201_CREATED)
     except ObjectDoesNotExist as e:
         return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
@@ -91,7 +91,7 @@ def update_personel_account(request, profile_id):
         # returns 1 or 0
         Person_item.update(**payload)
         Person = PersonelAccount.objects.get(id=profile_id)
-        serializer = PersonelAccountSerializer(Person)
+        serializer = PersonelAccountAddSerializer(Person)
         return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
     except ObjectDoesNotExist as e:
         return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
@@ -563,7 +563,7 @@ def update_location_person(request):
 @api_view(["POST"])
 @csrf_exempt
 @permission_classes([IsAuthenticated])
-def add_personel_account_phone(request):
+def add_personel_account_phone(request, code):
     payload = json.loads(request.body)
     user = request.user.id
     try:
@@ -604,5 +604,79 @@ def update_personel_account_phone(request):
 def get_popular_list(request, city):
     user = request.user
     Restaurant = RestaurantAccount.objects.filter(city=city)
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_Verified_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(city=city, isVirefied=True)
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_open_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(city=city, status=True)
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_score_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(city=city).order_by("-score")
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_takeaway_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(
+        serviceOfferType__isTakeaway=True, city=city)
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_dinIn_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(
+        serviceOfferType__isDinIn=True, city=city)
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_delivery_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(
+        serviceOfferType__isDelivery=True, city=city)
+    serializer = RestaurantAccountSerializer(Restaurant, many=True)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_promo_list(request, city):
+    user = request.user
+    Restaurant = RestaurantAccount.objects.filter(
+        promo__ispromoted=True, city=city)
     serializer = RestaurantAccountSerializer(Restaurant, many=True)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)

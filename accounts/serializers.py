@@ -61,7 +61,7 @@ class RestaurantAccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = RestaurantAccount
         fields = ('id', 'added_by', 'name', 'address', 'city', 'Service', 'Categorie',
-                  'bio', 'website', 'avatar', 'phone', 'serviceOffer', 'isVirefied', 'status', 'location', 'created_at', 'updated_at')
+                  'bio', 'website', 'avatar', 'phone', 'serviceOffer', 'isVirefied', 'status', 'score', 'location', 'created_at', 'updated_at')
 
 
 class RestaurantAccountAddSerializer(serializers.ModelSerializer):
@@ -95,6 +95,13 @@ class PersonelAccountSerializer(serializers.ModelSerializer):
         model = PersonelAccount
         fields = ('id', 'added_by', 'name', 'address',
                   'city', 'country', 'location', 'phone', 'created_at', 'updated_at')
+
+
+class PersonelAccountAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonelAccount
+        fields = ('id', 'added_by', 'name', 'address',
+                  'city', 'country', 'created_at', 'updated_at')
 
 
 class ReviewsSerializers(serializers.ModelSerializer):
