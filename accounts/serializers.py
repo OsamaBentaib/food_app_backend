@@ -65,9 +65,6 @@ class RestaurantAccountSerializer(serializers.ModelSerializer):
 
 
 class RestaurantAccountAddSerializer(serializers.ModelSerializer):
-    location = RestaurantLocationSerializers(
-        many=False, source="Locations_person")
-
     class Meta:
         model = RestaurantAccount
         fields = ('id', 'added_by', 'name', 'address', 'city', 'country',

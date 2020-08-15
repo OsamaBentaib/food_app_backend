@@ -50,6 +50,7 @@ class IngredientsSerializer(serializers.ModelSerializer):
 
 class MenuItemDetailsSerializer(serializers.ModelSerializer):
     rst_id = RestaurantAccountSerializer(many=False)
+
     class Meta:
         model = MenuItem
         fields = ('id',

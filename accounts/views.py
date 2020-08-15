@@ -181,18 +181,19 @@ def add_restaurant_account(request, format=None):
 def update_restaurant_account(request):
     user = request.user
     payload = json.loads(request.body)
-    try:
-        restaurant_item = RestaurantAccount.objects.filter(
+    restaurant_item = RestaurantAccount.objects.filter(
             added_by=user)
         # returns 1 or 0
-        restaurant_item.update(**payload)
-        restaurants = RestaurantAccount.objects.get(added_by=user)
-        serializer = RestaurantAccountAddSerializer(restaurants)
-        return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
-    except ObjectDoesNotExist as e:
-        return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
-    except Exception:
-        return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    restaurant_item.update(**payload)
+    restaurants = RestaurantAccount.objects.get(added_by=user)
+    serializer = RestaurantAccountAddSerializer(restaurants)
+    return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+    # try:
+        
+    # except ObjectDoesNotExist as e:
+    #     return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
+    # except Exception:
+    #     return JsonResponse({'error': 'Something terrible went wrong'}, safe=False, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 # DELETE Restaurant Info
 
 

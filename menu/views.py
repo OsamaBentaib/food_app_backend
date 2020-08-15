@@ -47,6 +47,7 @@ def get_menu_item_details(request, item_id):
 def add_menu_item(request):
     payload = json.loads(request.body)
     user = request.user
+
     try:
         author = RestaurantAccount.objects.get(added_by=user)
         item = MenuItem.objects.create(
@@ -55,7 +56,7 @@ def add_menu_item(request):
             title=payload["title"],
             description=payload["description"],
             price=payload["price"],
-            dprice=payload["dprice"],
+            dprice=0.00,
             categories=payload["categories"],
             poster="",
         )
