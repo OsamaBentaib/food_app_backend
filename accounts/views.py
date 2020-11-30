@@ -1,8 +1,8 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, APIView, permission_classes
 from rest_framework.decorators import parser_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
-from django.http import JsonResponse
+from django.http import JsonResponse, response
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import parser_classes
 from rest_framework.parsers import JSONParser
@@ -182,14 +182,14 @@ def update_restaurant_account(request):
     user = request.user
     payload = json.loads(request.body)
     restaurant_item = RestaurantAccount.objects.filter(
-            added_by=user)
-        # returns 1 or 0
+        added_by=user)
+    # returns 1 or 0
     restaurant_item.update(**payload)
     restaurants = RestaurantAccount.objects.get(added_by=user)
     serializer = RestaurantAccountAddSerializer(restaurants)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
     # try:
-        
+
     # except ObjectDoesNotExist as e:
     #     return JsonResponse({'error': str(e)}, safe=False, status=status.HTTP_404_NOT_FOUND)
     # except Exception:
@@ -681,3 +681,26 @@ def get_promo_list(request, city):
         promo__ispromoted=True, city=city)
     serializer = RestaurantAccountSerializer(Restaurant, many=True)
     return JsonResponse(serializer.data, safe=False, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def get_cities_list_json(request, query):
+    user = request.user
+    with open("json/response.json", "r", encoding="utf8") as read_file:
+        data = json.load(read_file)
+        res = []
+        limit = 6
+        index = 0
+        for i in data:
+            if (query in i['name']) or (query in i['country']) or (query in i['code']):
+                if index == limit:
+                    break
+                index += 1
+                name = i['name']
+                country = i['country']
+                code = i['code']
+                res.append(
+                    {"name": name, "country": country, "code": code})
+        return JsonResponse(res, safe=False, status=status.HTTP_200_OK)

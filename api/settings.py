@@ -27,6 +27,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', "127.0.0.1"]
 
+CORS_ORIGIN_WHITELIST = 'http://localhost:3000',
+CORS_ORIGIN_REGEX_WHITELIST = (
+    r'^(https?://)?localhost',
+    r'^(https?://)?127.',
+)
+
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
@@ -49,6 +55,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    'corsheaders',
     'accounts',
     'core',
     'menu',
@@ -60,6 +67,7 @@ SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -141,6 +149,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Media
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# Json
+MEDIA_URL = '/json/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "json")
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -151,7 +162,7 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
-
+SECRET_KEY = '$!r)@8^pv#=wd7ksxso22sc#+=jc*e2ssyqihnh64+*lor_+-d'
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -172,3 +183,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 django_heroku.settings(locals())
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/emails'
+DEFAULT_FROM_EMAIL = 'admin@admin.com'

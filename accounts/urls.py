@@ -2,7 +2,8 @@ from django.urls import include, path
 from .views import *
 
 urlpatterns = [
-    path('account/personel/phone/add/code/<int:code>/', add_personel_account_phone),
+    path('account/personel/phone/add/code/<int:code>/',
+         add_personel_account_phone),
     path('account/personel/phone/update/', update_personel_account_phone),
     path('token/', get_token_type),
     path('token/add/', add_token_type),
@@ -55,6 +56,10 @@ urlpatterns = [
     path('fliters/list/open/c/<str:city>/', get_open_list),
     path('fliters/list/score/c/<str:city>/', get_score_list),
     path('fliters/list/promo/c/<str:city>/', get_promo_list),
+
+    path('cities/json/query/<str:query>/',
+         get_cities_list_json, name="Cities Json"),
+
 
 
 
